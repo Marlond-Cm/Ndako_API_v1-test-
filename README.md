@@ -13,7 +13,7 @@ Cette API permet principalement de consulter les villes, les quartiers et les lo
 * Helmet — sécurité HTTP
 * CORS — gestion des accès cross-origin
 * Morgan — journalisation des requêtes HTTP
-* Express Rate Limit — limitation du nombre de requêtes
+  
 
 ## Structure principale
 
@@ -52,7 +52,6 @@ L'API permet actuellement de :
 * afficher les informations du propriétaire associées au logement ;
 * gérer les erreurs HTTP avec des réponses JSON standardisées ;
 * journaliser les requêtes HTTP ;
-* limiter les requêtes vers l'API.
 
 ---
 
@@ -445,11 +444,7 @@ DB_USER=postgres
 DB_PASSWORD=votre_mot_de_passe
 ```
 
-Lancer le serveur :
-
-```bash
-node src/server.js
-```
+Lancer le serveur 
 
 L'API sera disponible sur :
 
