@@ -1,21 +1,23 @@
-NDAKO TECH — API Backend
+# NDAKO TECH — API Backend
 
-API REST développée pour la plateforme NDAKO TECH, une solution de recherche de logements.
+API REST développée pour la plateforme **NDAKO TECH**, une solution de recherche de logements.
 
 Cette API permet principalement de consulter les villes, les quartiers et les logements disponibles, avec leurs informations, photos et caractéristiques.
 
-Technologies utilisées
-Node.js
-Express.js
-PostgreSQL
-pg — connexion à PostgreSQL
-Helmet — sécurité HTTP
-CORS — gestion des accès cross-origin
-Morgan — journalisation des requêtes HTTP
+## Technologies utilisées
 
+* Node.js
+* Express.js
+* PostgreSQL
+* `pg` — connexion à PostgreSQL
+* Helmet — sécurité HTTP
+* CORS — gestion des accès cross-origin
+* Morgan — journalisation des requêtes HTTP
+* Express Rate Limit — limitation du nombre de requêtes
 
-Structure principale
+## Structure principale
 
+```text
 Ndako_API/
 ├── database/
 ├── src/
@@ -32,37 +34,57 @@ Ndako_API/
 ├── package-lock.json
 ├── app.js
 └── server.js
-Fonctionnalités développées
+```
+
+## Fonctionnalités développées
 
 L'API permet actuellement de :
 
-récupérer la liste des villes ;
-récupérer les quartiers d'une ville ;
-rechercher les logements disponibles ;
-filtrer les logements par ville ;
-filtrer les logements par quartier ;
-filtrer les logements selon un loyer maximum ;
-trier les logements par loyer croissant ;
-consulter les détails d'un logement ;
-récupérer les photos d'un logement ;
-afficher les informations du propriétaire associées au logement ;
-gérer les erreurs HTTP avec des réponses JSON standardisées ;
-journaliser les requêtes HTTP ;
+* récupérer la liste des villes ;
+* récupérer les quartiers d'une ville ;
+* rechercher les logements disponibles ;
+* filtrer les logements par ville ;
+* filtrer les logements par quartier ;
+* filtrer les logements selon un loyer maximum ;
+* trier les logements par loyer croissant ;
+* consulter les détails d'un logement ;
+* récupérer les photos d'un logement ;
+* afficher les informations du propriétaire associées au logement ;
+* gérer les erreurs HTTP avec des réponses JSON standardisées ;
+* journaliser les requêtes HTTP ;
+* limiter les requêtes vers l'API.
 
+---
 
-API
-URL de base
+# API
+
+## URL de base
+
+```text
 http://localhost:5000
+```
 
 Version actuelle :
 
+```text
 /api/v1
-Routes
+```
 
-1. Vérifier l'état de l'API
-GET
+---
+
+# Routes
+
+## 1. Vérifier l'état de l'API
+
+### GET
+
+```http
 GET /api/health
-Réponse
+```
+
+### Réponse
+
+```json
 {
   "success": true,
   "data": {
@@ -70,11 +92,21 @@ Réponse
     "message": "API NDAKO TECH opérationnelle"
   }
 }
+```
 
-2. Récupérer les villes
-GET
+---
+
+## 2. Récupérer les villes
+
+### GET
+
+```http
 GET /api/v1/villes
-Réponse
+```
+
+### Réponse
+
+```json
 {
   "success": true,
   "data": [
@@ -88,13 +120,27 @@ Réponse
     }
   ]
 }
+```
 
-3. Récupérer les quartiers d'une ville
-GET
+---
+
+## 3. Récupérer les quartiers d'une ville
+
+### GET
+
+```http
 GET /api/v1/villes/:villeId/quartiers
-Exemple
+```
+
+### Exemple
+
+```http
 GET /api/v1/villes/1/quartiers
-Réponse
+```
+
+### Réponse
+
+```json
 {
   "success": true,
   "data": [
@@ -110,16 +156,29 @@ Réponse
     }
   ]
 }
-Logements
+```
 
-4. Récupérer les logements disponibles
-GET
+---
+
+# Logements
+
+## 4. Récupérer les logements disponibles
+
+### GET
+
+```http
 GET /api/v1/logements
+```
 
 Cette route retourne uniquement les logements ayant le statut :
 
+```text
 disponible
-Réponse
+```
+
+### Réponse
+
+```json
 {
   "success": true,
   "data": [
@@ -150,50 +209,95 @@ Réponse
     }
   ]
 }
+```
 
+---
 
-5. Filtrer par ville
-GET
+## 5. Filtrer par ville
+
+### GET
+
+```http
 GET /api/v1/logements?ville_id=1
+```
 
 Retourne les logements disponibles appartenant à la ville sélectionnée.
 
-6. Filtrer par quartier
-GET
+---
+
+## 6. Filtrer par quartier
+
+### GET
+
+```http
 GET /api/v1/logements?quartier_id=3
+```
 
 Retourne les logements disponibles du quartier sélectionné.
 
-7. Filtrer par loyer maximum
-GET
+---
+
+## 7. Filtrer par loyer maximum
+
+### GET
+
+```http
 GET /api/v1/logements?loyer_max=150000
+```
 
-Retourne les logements dont le loyer est inférieur ou égal à 150000 FCFA.
+Retourne les logements dont le loyer est inférieur ou égal à `150000 FCFA`.
 
-8. Combiner plusieurs filtres
-GET
+---
+
+## 8. Combiner plusieurs filtres
+
+### GET
+
+```http
 GET /api/v1/logements?ville_id=1&quartier_id=3&loyer_max=150000
+```
 
 Les différents critères sont appliqués simultanément.
 
-9. Trier par loyer croissant
-GET
+---
+
+## 9. Trier par loyer croissant
+
+### GET
+
+```http
 GET /api/v1/logements?sort=loyer_asc
+```
 
 Les logements sont classés du loyer le moins élevé au plus élevé.
 
 Les filtres peuvent également être combinés :
 
+```http
 GET /api/v1/logements?ville_id=1&loyer_max=150000&sort=loyer_asc
-Détails d'un logement
+```
 
+---
 
-10. Récupérer un logement
-GET
+# Détails d'un logement
+
+## 10. Récupérer un logement
+
+### GET
+
+```http
 GET /api/v1/logements/:id
-Exemple
+```
+
+### Exemple
+
+```http
 GET /api/v1/logements/1
-Réponse Exemple 
+```
+
+### Réponse Exemple 
+
+```json
 {
   "success": true,
   "data": {
@@ -226,15 +330,29 @@ Réponse Exemple
     ]
   }
 }
-Photos d'un logement
+```
 
+---
 
-11. Récupérer les photos
-GET
+# Photos d'un logement
+
+## 11. Récupérer les photos
+
+### GET
+
+```http
 GET /api/v1/logements/:logementId/photos
-Exemple
+```
+
+### Exemple
+
+```http
 GET /api/v1/logements/1/photos
-Réponse Exemple
+```
+
+### Réponse Exemple
+
+```json
 {
   "success": true,
   "data": [
@@ -250,20 +368,32 @@ Réponse Exemple
     }
   ]
 }
+```
 
 Si le logement ne possède aucune photo :
 
+```json
 {
   "success": true,
   "data": []
 }
-Gestion des erreurs
+```
+
+---
+
+# Gestion des erreurs
 
 L'API utilise une structure JSON commune pour les erreurs.
 
-Exemple : logement inexistant
+### Exemple : logement inexistant
+
+```http
 GET /api/v1/logements/99999
-Réponse
+```
+
+### Réponse
+
+```json
 {
   "success": false,
   "error": {
@@ -271,9 +401,17 @@ Réponse
     "message": "Le logement demandé n'existe pas."
   }
 }
-Exemple : paramètre invalide
+```
+
+### Exemple : paramètre invalide
+
+```http
 GET /api/v1/logements?loyer_max=abc
-Réponse
+```
+
+### Réponse
+
+```json
 {
   "success": false,
   "error": {
@@ -281,16 +419,23 @@ Réponse
     "message": "Le paramètre loyer_max doit être un nombre supérieur ou égal à 0."
   }
 }
-Installation
+```
+
+---
+
+# Installation
 
 Cloner le projet puis installer les dépendances :
 
+```bash
 npm install
+```
 
-Créer le fichier .env à partir de .env.example.
+Créer le fichier `.env` à partir de `.env.example`.
 
 Exemple :
 
+```env
 PORT=5000
 
 DB_HOST=localhost
@@ -298,17 +443,25 @@ DB_PORT=5432
 DB_NAME=ndako_db
 DB_USER=postgres
 DB_PASSWORD=votre_mot_de_passe
+```
 
 Lancer le serveur :
 
+```bash
 node src/server.js
+```
 
 L'API sera disponible sur :
 
+```text
 http://localhost:5000
-Statut du projet
+```
 
-Version : V1 — API de consultation
+---
+
+# Statut du projet
+
+**Version : V1 — API de consultation**
 
 Les fonctionnalités actuelles sont principalement orientées vers la consultation et la recherche de logements.
 
