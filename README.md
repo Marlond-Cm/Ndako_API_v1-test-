@@ -26,8 +26,6 @@ Ndako_API/
 │   ├── middlewares/
 │   ├── models/
 │   ├── routes/
-│   ├── app.js
-│   └── server.js
 ├── .env.example
 ├── .gitignore
 ├── package.json
